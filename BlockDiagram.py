@@ -1,24 +1,7 @@
-import time
-
-import csv
-import sys
-from begin import *
-from inputdata import *
-from condition import *
-from operation import *
-from cycle import *
-from end import *
-from table import *
 from PyQt5.QtGui import *
-from title import *
-from editor import *
-from contextmenu import *
-from help import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-
-from MPU_save_project_widget import *
 
 """
 Файл BlockDiagram.py является частью модуля Proc.

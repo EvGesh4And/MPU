@@ -2,8 +2,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from help import *
-from BlockDiagram import *
+from Development import *
 
 """
 Файл BlockDiagram.py является частью модуля Proc.
@@ -12,7 +11,7 @@ from BlockDiagram import *
 """
 
 
-class MainWindow(QtWidgets.QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
         """
         Метод определяет Главное окно
@@ -25,63 +24,80 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowTitle("ПК 'Экстремум'. Модуль процедурного управления")
 
         # Добавление логотипа главному окну
-        self.setWindowIcon(QtGui.QIcon("logo_Extremum.png"))
+        self.setWindowIcon(QIcon("logo_Extremum.png"))
 
         # Задание размера окна, который равен размеру всего экрана
         self.setGeometry(QDesktopWidget().screenGeometry(-1))
 
         # Флаг, который задает окно поверх всех окон
-        self.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint)
-
-        # Переменные блоков
-
-        # Списки блоков
+        self.setWindowFlag(Qt.WindowStaysOnTopHint)
 
         # Задание логотипа Комиты
         self.comita = QLabel(self)
         self.comita.setScaledContents(True)
-        self.comita.setPixmap(QtGui.QPixmap("comita.png"))
+        self.comita.setPixmap(QPixmap("comita.png"))
         self.comita.show()
 
-        # Создание вложенных списков
-        self.enterButton = self.pressedButton = None
-        self.menubar = QMenuBar(self)
-        self.setMenuBar(self.menubar)
-        self.menubar.setObjectName("menubar")
-        self.razrabotka = self.menubar.addAction("Разработка")
-        self.inspolnenie = self.menubar.addAction("Исполнение")
 
-        self.razrab_wid = Razrabotka()
-        # Вызов команд при нажатии на кнопки
-        self.razrabotka.triggered.connect(self.open_razrab_wid)
+        self.tab_main = QTabWidget(self)
+        self.tab_main.move(0, 0)
 
-    def open_razrab_wid(self):
-        print("Hi")
-        # Задание размера окна, который равен размеру всего экрана
-        print(self.getClientRects())
-        self.razrab_wid.setGeometry(self.getClientRects())
-        self.razrab_wid.show()
-
+        self.tab_controller = Development(self)
+        self.tab_controller1 = Development(self)
+        self.tab_main.addTab(self.tab_controller, "Разработка")
+        self.tab_main.addTab(self.tab_controller1, "Исполнение")
 
     def resizeEvent(self, e):
-        self.comita.setGeometry(self.width() - 180, self.height() - 70, 160, 50)
+        self.comita.setGeometry(self.width() - 180, self.height() - 80, 160, 50)
+        self.tab_main.resize(self.geometry().width(), self.geometry().height())
+
+qss = """ 
+QTabWidget::tab-bar {
+    alignment: center;
+}
+
+QTabWidget::pane { /* The tab widget frame */
+    border-top: 2px solid #C2C7CB;
+}
+
+QTabBar::tab {
+    border: 2px solid #C4C4C3;
+    min-width: 24ex;
+    min-height: 5ex;
+    padding: 5px;
+}
+
+QTabBar::tab:selected  {
+    border-color: #1dacd6;
+    font: 14pt;
+}  
+
+QTabBar::tab:!selected {
+    border-color:rgb(220, 220, 220);
+    font: 14pt;
+}
 
 
-    def add_begin(self):
-        """
-        Метод создания элемента класса Начало
-        :return: виджет на главном окне
-        """
-        self.begin = Begin(self)
-        self.begin.show()
-        self.list_begin.append(self.begin)
-        print("Add begin")
-        self.begin.setGeometry(140, 73, 365, 243)
-        self.begin.set_name(f"{len(self.list_begin)}")
+QMenuBar {
+    spacing: 5px; /* spacing between menu bar items */
+    font: 12pt;
+}
 
+QMenuBar::item {
+    padding: 2px 4px;
+    background: transparent;
+    border-radius: 4px;
+}
+
+QMenuBar::item:selected { /* when selected using mouse or keyboard */
+    border: 1px solid #05B8CC;
+}
+
+"""
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
+    app = QApplication([''])
+    app.setStyleSheet(qss)
     window = MainWindow()
     window.show()
     app.exec_()
