@@ -1,0 +1,7 @@
+type:name
+begin:1_begin
+inputdata:input
+cond:1_cond
+operation:1_op
+cycle:1_cycle
+end:1_end
